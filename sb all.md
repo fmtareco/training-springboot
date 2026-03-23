@@ -6,369 +6,369 @@
 
 What is Dependency Injection (DI)?
 --
-•	Dependency Injection (DI) is a design pattern 
-o	to achieve Inversion of Control (IoC) between classes and their dependencies. 
-•	instead of a class creating the objects it needs (using the new keyword), 
-o	objects are provided (injected) to it by an external entity—Spring IoC Container. 
-•	Without DI: 
-o	Class A creates an instance of Class B. 
-o	Class A is now "tightly coupled" to the specific implementation of B.
-•	With DI: 
-o	Class A declares it needs an object of type B. 
-o	The Spring Container creates B and gives it to A. 
-•	Why use it?
-o	Decoupling: 
-	don't need to know how to instantiate their dependencies.
-o	Easier Testing: 
-	can easily inject "Mock" objects during unit tests.
-o	Flexibility: 
-	can swap implementations (e.g., changing a MySQLRepository for a PostgreSQLRepository) 
-	without touching the code of the classes that use them. 
-•	Types of Injection in Spring
-•	Constructor Injection (Recommended)
-o	provided through the constructor. 
-o	safest way as it 
-	allows for immutable fields (final) and 
-	ensures the object is never created in an incomplete state. 
-•	Setter Injection
-o	provided through a setter method. 
-o	Useful for optional dependencies. 
+	* Dependency Injection (DI) is a design pattern 
+		* to achieve Inversion of Control (IoC) between classes and their dependencies. 
+	* instead of a class creating the objects it needs (using the new keyword), 
+		* objects are provided (injected) to it by an external entity—Spring IoC Container. 
+	* Without DI: 
+		* Class A creates an instance of Class B. 
+		* Class A is now "tightly coupled" to the specific implementation of B.
+	* With DI: 
+		* Class A declares it needs an object of type B. 
+		* The Spring Container creates B and gives it to A. 
+	* Why use it?
+		* Decoupling: 
+		* don't need to know how to instantiate their dependencies.
+		* Easier Testing: 
+		* can easily inject "Mock" objects during unit tests.
+		* Flexibility: 
+		* can swap implementations (e.g., changing a MySQLRepository for a PostgreSQLRepository) 
+		* without touching the code of the classes that use them. 
+	* Types of Injection in Spring
+	* Constructor Injection (Recommended)
+		* provided through the constructor. 
+		* safest way as it 
+		* allows for immutable fields (final) and 
+		* ensures the object is never created in an incomplete state. 
+	* Setter Injection
+		* provided through a setter method. 
+		* Useful for optional dependencies. 
 @Autowired
 public void setUserRepository(UserRepository userRepository) {
 	this.userRepository = userRepository;
 }
-•	Field Injection
-o	injected directly into the field using @Autowired. 
-o	generally discouraged because it 
-	makes testing harder and 
-	hides dependencies
-	fields not final
+	* Field Injection
+		* injected directly into the field using @Autowired. 
+		* generally discouraged because it 
+		* makes testing harder and 
+		* hides dependencies
+		* fields not final
 
 
 What is the IoC container?
 --
-•	Inversion of Control (IoC) Container 
-o	core engine of the Spring Framework. 
-o	responsible for managing the entire lifecycle of your application's objects (known as Beans). 
-o	Instead manually creating objects, the container "takes control" of
-	instantiating, 
-	configuring, and 
-	assembling them. 
-•	1. How it Works (The Workflow)
-o	Metadata: 
-	instructions via Annotations (@Component, @Service), 
-	Java Config (@Configuration), or 
-	XML.
-o	Instantiation: 
-	container reads this metadata and creates instances of your classes.
-o	Dependency Injection: 
-	looks at what each object needs and "injects" the required dependencies.
-o	Management: 
-	keeps the objects in memory (usually as Singletons) and 
-	destroys them when the application shuts down. 
-•	2. The Two Main Types of Containers
-o	BeanFactory: 
-	basic version. 
-	provides the configuration framework and basic functionality (Lazy loading by default).
-o	ApplicationContext: 
-	more advanced version (and the one everyone uses). 
-	includes everything in BeanFactory plus:
-•	Easier integration with Spring AOP.
-•	Message resource handling (for internationalization).
-•	Event publication (Application Events).
-•	Web-specific features. 
-•	3. Key Responsibilities
-o	Object Creation: 
-	Finding classes marked as beans and creating them.
-o	Wiring: 
-	Connecting objects together (Dependency Injection).
-o	Lifecycle Management: 
-	Handling initialization methods 
-	@PostConstruct - to be executed after dependency injection to perform any initialization
-	destruction methods 
-	@PreDestroy - to signal that the instance is in the process of being removed by the containe
-o	Scope Management: 
-	Deciding if it should create a new instance every time (Prototype) or 
-	keep just one for the whole app (Singleton). 
-•	4. Why call it "Inversion of Control"?
-o	framework controls the flow and gives your code the objects it needs. 
-o	Control is inverted from the developer to the framework.
+	* Inversion of Control (IoC) Container 
+		* core engine of the Spring Framework. 
+		* responsible for managing the entire lifecycle of your application's objects (known as Beans). 
+		* Instead manually creating objects, the container "takes control" of
+		* instantiating, 
+		* configuring, and 
+		* assembling them. 
+	* 1. How it Works (The Workflow)
+		* Metadata: 
+		* instructions via Annotations (@Component, @Service), 
+		* Java Config (@Configuration), or 
+		* XML.
+		* Instantiation: 
+		* container reads this metadata and creates instances of your classes.
+		* Dependency Injection: 
+		* looks at what each object needs and "injects" the required dependencies.
+		* Management: 
+		* keeps the objects in memory (usually as Singletons) and 
+		* destroys them when the application shuts down. 
+	* 2. The Two Main Types of Containers
+		* BeanFactory: 
+		* basic version. 
+		* provides the configuration framework and basic functionality (Lazy loading by default).
+		* ApplicationContext: 
+		* more advanced version (and the one everyone uses). 
+		* includes everything in BeanFactory plus:
+	* Easier integration with Spring AOP.
+	* Message resource handling (for internationalization).
+	* Event publication (Application Events).
+	* Web-specific features. 
+	* 3. Key Responsibilities
+		* Object Creation: 
+		* Finding classes marked as beans and creating them.
+		* Wiring: 
+		* Connecting objects together (Dependency Injection).
+		* Lifecycle Management: 
+		* Handling initialization methods 
+		* @PostConstruct - to be executed after dependency injection to perform any initialization
+		* destruction methods 
+		* @PreDestroy - to signal that the instance is in the process of being removed by the containe
+		* Scope Management: 
+		* Deciding if it should create a new instance every time (Prototype) or 
+		* keep just one for the whole app (Singleton). 
+	* 4. Why call it "Inversion of Control"?
+		* framework controls the flow and gives your code the objects it needs. 
+		* Control is inverted from the developer to the framework.
 
 Difference between BeanFactory and ApplicationContext
 --
-•	BeanFactory 
-o	basic, lightweight IoC container for bean management and 
-o	lazy loading, 
-o	ideal for memory-constrained environments. 
-•	ApplicationContext 
-o	advanced, eager-loading superset that adds enterprise-level features like AOP, i18n, and event publication. ApplicationContext is generally preferred, especially in web applications. 
-•	Initialization: 
-o	BeanFactory uses lazy initialization (beans created on demand), while 
-o	ApplicationContext uses eager initialization (all singleton beans created at startup).
-•	Features: 
-o	ApplicationContext supports 
-	internationalization (i18n), 
-	event propagation, and
-	 AOP, which BeanFactory does not.
-•	Configuration: 
-o	ApplicationContext 
-	improved annotation-based dependency injection and 
-	supports web-specific scopes (Request, Session).
-•	Resource Management: 
-o	BeanFactory 
-	requires manual resource loading, 
-o	ApplicationContext 
-	manages resources on its own.
-•	Performance: 
-o	BeanFactory is more memory-efficient due to lazy loading. 
-•	When to Use Which
-o	BeanFactory: 
-	very simple applications or 
-	memory-constrained environments (like embedded systems).
-o	ApplicationContext: 
-	most enterprise-level applications, 
-	Spring Boot projects, and 
-	when using annotation-based configuration
+	* BeanFactory 
+		* basic, lightweight IoC container for bean management and 
+		* lazy loading, 
+		* ideal for memory-constrained environments. 
+	* ApplicationContext 
+		* advanced, eager-loading superset that adds enterprise-level features like AOP, i18n, and event publication. ApplicationContext is generally preferred, especially in web applications. 
+	* Initialization: 
+		* BeanFactory uses lazy initialization (beans created on demand), while 
+		* ApplicationContext uses eager initialization (all singleton beans created at startup).
+	* Features: 
+		* ApplicationContext supports 
+		* internationalization (i18n), 
+		* event propagation, and
+		*  AOP, which BeanFactory does not.
+	* Configuration: 
+		* ApplicationContext 
+		* improved annotation-based dependency injection and 
+		* supports web-specific scopes (Request, Session).
+	* Resource Management: 
+		* BeanFactory 
+		* requires manual resource loading, 
+		* ApplicationContext 
+		* manages resources on its own.
+	* Performance: 
+		* BeanFactory is more memory-efficient due to lazy loading. 
+	* When to Use Which
+		* BeanFactory: 
+		* very simple applications or 
+		* memory-constrained environments (like embedded systems).
+		* ApplicationContext: 
+		* most enterprise-level applications, 
+		* Spring Boot projects, and 
+		* when using annotation-based configuration
 
 What is a Spring Bean lifecycle?
 --
-•	predefined sequence of stages that a Bean goes through from 
-o	its creation to its destruction, 
-o	managed entirely by the Spring IoC Container.
-•	Main Lifecycle Phases
-•	Instantiation: 
-o	The container creates the bean instance (using its constructor or factory method).
-•	Populate Properties: 
-•		Spring injects the necessary dependencies (via @Autowired, setters, or constructors).
-•	Aware Interfaces: 	 
-•		BeanNameAware – 
-•			allows know the ID/name assigned to it within the Spring container.
-•			void setBeanName(String name)
-•		ApplicationContextAware
-	provides the bean with a reference to the ApplicationContext it is running in. 
-	void setApplicationContext(ApplicationContext applicationContext).
-	allows the bean to perform advanced tasks such as:
-		Programmatically looking up other beans via getBean().
-		Accessing file resources or environment settings.
-		Publishing application events.
-•	BeanPostProcessor (Before Initialization): 	
-o	The postProcessBeforeInitialization methods are triggered 
-o		On interface BeanPostProcessor
-o		called after bean created and dependencies injected, 
-o		before any initialization callbacks (like @PostConstruct, afterPropertiesSet, or a custom init-method).
-•	Initialization: 
-•		where run custom setup logic. 
-•		The order of execution is:
-•			Methods annotated with @PostConstruct.
-•			The afterPropertiesSet() method from the InitializingBean interface.
-•			Custom init-method defined in XML or via @Bean(initMethod = "...").
-•	BeanPostProcessor (After Initialization): 
-•		The postProcessAfterInitialization methods run, 
-•			often wrapping the bean in a proxy (e.g., for AOP or @Transactional).
-•	Ready for Use: 
-•		The bean is now fully initialized and active within the application.
-•	Destruction: 
-•		When the ApplicationContext closes, the bean is cleaned up:
-•			Methods annotated with @PreDestroy.
-•			The destroy() method from the DisposableBean interface.
-•			Custom destroy-method defined in configuration.
-•	Summary of Control Hooks
-•		most common way using JSR-250 annotations @PostConstruct and @PreDestroy
+	* predefined sequence of stages that a Bean goes through from 
+		* its creation to its destruction, 
+		* managed entirely by the Spring IoC Container.
+	* Main Lifecycle Phases
+	* Instantiation: 
+		* The container creates the bean instance (using its constructor or factory method).
+	* Populate Properties: 
+	* 	Spring injects the necessary dependencies (via @Autowired, setters, or constructors).
+	* Aware Interfaces: 	 
+	* 	BeanNameAware – 
+	* 		allows know the ID/name assigned to it within the Spring container.
+	* 		void setBeanName(String name)
+	* 	ApplicationContextAware
+		* provides the bean with a reference to the ApplicationContext it is running in. 
+		* void setApplicationContext(ApplicationContext applicationContext).
+		* allows the bean to perform advanced tasks such as:
+		* 	Programmatically looking up other beans via getBean().
+		* 	Accessing file resources or environment settings.
+		* 	Publishing application events.
+	* BeanPostProcessor (Before Initialization): 	
+		* The postProcessBeforeInitialization methods are triggered 
+		* 	On interface BeanPostProcessor
+		* 	called after bean created and dependencies injected, 
+		* 	before any initialization callbacks (like @PostConstruct, afterPropertiesSet, or a custom init-method).
+	* Initialization: 
+	* 	where run custom setup logic. 
+	* 	The order of execution is:
+	* 		Methods annotated with @PostConstruct.
+	* 		The afterPropertiesSet() method from the InitializingBean interface.
+	* 		Custom init-method defined in XML or via @Bean(initMethod = "...").
+	* BeanPostProcessor (After Initialization): 
+	* 	The postProcessAfterInitialization methods run, 
+	* 		often wrapping the bean in a proxy (e.g., for AOP or @Transactional).
+	* Ready for Use: 
+	* 	The bean is now fully initialized and active within the application.
+	* Destruction: 
+	* 	When the ApplicationContext closes, the bean is cleaned up:
+	* 		Methods annotated with @PreDestroy.
+	* 		The destroy() method from the DisposableBean interface.
+	* 		Custom destroy-method defined in configuration.
+	* Summary of Control Hooks
+	* 	most common way using JSR-250 annotations @PostConstruct and @PreDestroy
 
 
 What scopes exist for Spring beans?
 --
-•	bean's scope defines its lifecycle and visibility within the application. 
-o	@Component
-o	@Scope("prototype")
-o	@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-•	
-•	Spring provides six built-in scopes:
-•		Core Scopes (Available in any Spring Application) 
-•			Singleton (Default): 
-•				single instance per Spring IoC container. 
-•				Every request for that bean name returns the same cached instance.
-•			Prototype: 
-•				new instance every time the bean is requested from the container. 
-•		Web-Aware Scopes (Require Web-Aware ApplicationContext) 
-•			Request: 
-•				Scopes a bean to the lifecycle of a single HTTP request.
-•			Session: 
-•				Scopes a bean to the lifecycle of an HTTP Session.
-•			Application: 
-•				Scopes a bean to the lifecycle of a ServletContext.
-•			WebSocket: 
-•				Scopes a bean to the lifecycle of a WebSocket connection. 
-•	Additionally, you can define Custom Scopes by implementing the Scope interface.
+	* bean's scope defines its lifecycle and visibility within the application. 
+		* @Component
+		* @Scope("prototype")
+		* @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	* 
+	* Spring provides six built-in scopes:
+	* 	Core Scopes (Available in any Spring Application) 
+	* 		Singleton (Default): 
+	* 			single instance per Spring IoC container. 
+	* 			Every request for that bean name returns the same cached instance.
+	* 		Prototype: 
+	* 			new instance every time the bean is requested from the container. 
+	* 	Web-Aware Scopes (Require Web-Aware ApplicationContext) 
+	* 		Request: 
+	* 			Scopes a bean to the lifecycle of a single HTTP request.
+	* 		Session: 
+	* 			Scopes a bean to the lifecycle of an HTTP Session.
+	* 		Application: 
+	* 			Scopes a bean to the lifecycle of a ServletContext.
+	* 		WebSocket: 
+	* 			Scopes a bean to the lifecycle of a WebSocket connection. 
+	* Additionally, you can define Custom Scopes by implementing the Scope interface.
 
 
 What is component scanning?
 --
-•	Component Scanning 
-•		mechanism to automatically discover and register beans in Application Context. 
-•		eliminates the need to manually define every single bean in configuration files.
-•	1. How it works
-•		startup, "scans" your project’s classpath for classes decorated with stereotype annotations. 
-•		When finds one, creates an instance (a bean) and adds it to the IoC container.
-o	primary annotations Spring looks for are:
-o		@Component: generic parent annotation.
-o		@Service: For business logic.
-o		@Repository: For data access (DAO).
-o		@Controller for returning web pages (Views)
-o		@RestController: for returning data (JSON/XML).
-•	2. Automatic Activation in Spring Boot
-•		don't usually need to enable it manually. 
-•		@SpringBootApplication annotation (found on your main class) includes @ComponentScan by default.
-•		Default Behavior: scans the package containing your main class and all of its sub-packages.
-•	3. Manual Configuration
-•		need to scan packages outside your main package hierarchy:
-o		@Configuration
-o		@ComponentScan(basePackages = {"com.myproject.services", "com.myproject.utils"})
-•	Why it matters
-•		Less Boilerplate: No need to write @Bean methods for every class.
-•		Decoupling: Classes "announce" themselves to the container, making the system modular.
-•		Auto-wiring: Once scanned, these beans are immediately available for @Autowired injection.
+	* Component Scanning 
+	* 	mechanism to automatically discover and register beans in Application Context. 
+	* 	eliminates the need to manually define every single bean in configuration files.
+	* 1. How it works
+	* 	startup, "scans" your project’s classpath for classes decorated with stereotype annotations. 
+	* 	When finds one, creates an instance (a bean) and adds it to the IoC container.
+		* primary annotations Spring looks for are:
+		* 	@Component: generic parent annotation.
+		* 	@Service: For business logic.
+		* 	@Repository: For data access (DAO).
+		* 	@Controller for returning web pages (Views)
+		* 	@RestController: for returning data (JSON/XML).
+	* 2. Automatic Activation in Spring Boot
+	* 	don't usually need to enable it manually. 
+	* 	@SpringBootApplication annotation (found on your main class) includes @ComponentScan by default.
+	* 	Default Behavior: scans the package containing your main class and all of its sub-packages.
+	* 3. Manual Configuration
+	* 	need to scan packages outside your main package hierarchy:
+		* 	@Configuration
+		* 	@ComponentScan(basePackages = {"com.myproject.services", "com.myproject.utils"})
+	* Why it matters
+	* 	Less Boilerplate: No need to write @Bean methods for every class.
+	* 	Decoupling: Classes "announce" themselves to the container, making the system modular.
+	* 	Auto-wiring: Once scanned, these beans are immediately available for @Autowired injection.
 
 What is a Circular Dependency
 --
-•	Constructor Injection, forced to resolve dependency at moment  instantiation. 
-•	Bean A needs Bean B in its constructor, and Bean B needs Bean A in its constructor, Spring hits a deadlock
-•	How to resolve this:
-•		Redesign (Best Practice): 
-•			circular dependency is a sign of poor architectural design. 
-•			extract the shared logic into a third bean (Bean C) that both A and B can depend on.
-•		@Lazy Annotation: 
-•			"quick fix." 
-•			marking one of the constructor arguments with @Lazy, creates a proxy instead of the actual bean. 
-•			real bean is only initialized the first time a method is called.
-o			public BeanA(@Lazy BeanB beanB) { 
-o				this.beanB = beanB; 
-o			}
-•		Setter Injection: 
-•			Setter Injection allows create the objects first (empty) and then link them together. 
-•			generally less preferred than a clean redesign because it makes the bean mutable.
-•	Spring Boot 2.6, 
-•		circular dependencies are forbidden by default and 
-•		will cause your application to fail at startup BeanCurrentlyInCreationException
+	* Constructor Injection, forced to resolve dependency at moment  instantiation. 
+	* Bean A needs Bean B in its constructor, and Bean B needs Bean A in its constructor, Spring hits a deadlock
+	* How to resolve this:
+	* 	Redesign (Best Practice): 
+	* 		circular dependency is a sign of poor architectural design. 
+	* 		extract the shared logic into a third bean (Bean C) that both A and B can depend on.
+	* 	@Lazy Annotation: 
+	* 		"quick fix." 
+	* 		marking one of the constructor arguments with @Lazy, creates a proxy instead of the actual bean. 
+	* 		real bean is only initialized the first time a method is called.
+		* 		public BeanA(@Lazy BeanB beanB) { 
+		* 			this.beanB = beanB; 
+		* 		}
+	* 	Setter Injection: 
+	* 		Setter Injection allows create the objects first (empty) and then link them together. 
+	* 		generally less preferred than a clean redesign because it makes the bean mutable.
+	* Spring Boot 2.6, 
+	* 	circular dependencies are forbidden by default and 
+	* 	will cause your application to fail at startup BeanCurrentlyInCreationException
 
 What is the difference between: @Component, @Service, @Repository, @Controller
 --
-•	all three (@Service, @Repository, @Controller) are composed annotations that include @Component. 
-•	Spring treats them all as managed beans, but they serve different architectural roles.
-•	1. @Component
-•		generic stereotype for any Spring-managed component.
-•		when class doesn't fit into Service, Repository, or Controller (e.g., a utility class or a custom validator).
-•	2. @Repository
-•		Persistence Layer (Data Access).
-•		enables Automatic Persistence Exception Translation.
-•			intercepts low-level database exceptions (SQLException . Hibernate exceptions) and 
-•			re-throws them as Spring’s DataAccessException. This 
-•			makes error handling consistent across different databases.
-•	3. @Service
-•		Service Layer (Business Logic).
-•		provides no extra behavior beyond @Component.
-•		Why use it? 
-•			purely for semantics. It 
-•			tells this class contains the "brain" of your application and 
-•			place where @Transactional boundaries usually start.
-•	4. @Controller / @RestController
-•		Presentation Layer (Web/API).
-•		DispatcherServlet scans these classes to find @RequestMapping or @GetMapping annotations to route incoming HTTP requests.
-•		@RestController = @Controller + @ResponseBody.
-•		@Controller for returning web pages (Views)
-•		@RestController: for returning data (JSON/XML).
+	* all three (@Service, @Repository, @Controller) are composed annotations that include @Component. 
+	* Spring treats them all as managed beans, but they serve different architectural roles.
+	* 1. @Component
+	* 	generic stereotype for any Spring-managed component.
+	* 	when class doesn't fit into Service, Repository, or Controller (e.g., a utility class or a custom validator).
+	* 2. @Repository
+	* 	Persistence Layer (Data Access).
+	* 	enables Automatic Persistence Exception Translation.
+	* 		intercepts low-level database exceptions (SQLException . Hibernate exceptions) and 
+	* 		re-throws them as Spring’s DataAccessException. This 
+	* 		makes error handling consistent across different databases.
+	* 3. @Service
+	* 	Service Layer (Business Logic).
+	* 	provides no extra behavior beyond @Component.
+	* 	Why use it? 
+	* 		purely for semantics. It 
+	* 		tells this class contains the "brain" of your application and 
+	* 		place where @Transactional boundaries usually start.
+	* 4. @Controller / @RestController
+	* 	Presentation Layer (Web/API).
+	* 	DispatcherServlet scans these classes to find @RequestMapping or @GetMapping annotations to route incoming HTTP requests.
+	* 	@RestController = @Controller + @ResponseBody.
+	* 	@Controller for returning web pages (Views)
+	* 	@RestController: for returning data (JSON/XML).
 
 What happens during Spring context startup?
 --
 Expected senior knowledge:
 Bean creation → dependency injection → post processing → initialization
-•	the container follows a precise sequence to transform your classes into a running application. 
-•	1. Preparation
-•		sets up the environment, 
-•		initializes property sources (like application.properties), 
-•		prepares the internal structures for the context. 
-•	2. Bean Definition Loading (The Blueprint)
-•		scans your project or reads @Configuration classes. 
-•		doesn't create objects yet.
-•		creates BeanDefinitions—metadata "blueprints" that describe the bean's class, scope, and dependencies. 
-•	3. BeanFactoryPostProcessing (The Customizer) 
-•		Before any beans are instantiated, allows BeanFactoryPostProcessor beans to run. 
-•		Example: PropertySourcesPlaceholderConfigurer runs to replace ${db.url} placeholders with values properties file. 
-•	4. Bean Instantiation (The Birth)
-•		container starts creating the actual bean instances. 
-•		Constructor Injection, Spring resolves and injects dependencies immediately.
-•		Circular Dependency is found here without @Lazy, the application crashes. 
-•	5. Dependency Injection (The Wiring)
-•		"populates" the beans by injecting dependencies into fields (@Autowired or setter methods)
-•	6. Aware Interface Callbacks 
-•		beans implement "Aware" interfaces (like BeanNameAware), passes  framework objects (like the Bean Name or ApplicationContext) to the instance. 
-•	7. Bean Post-Processing (The Magic)
-•		Before Initialization: 
-•			Logic runs before @PostConstruct.
-•		Initialization: 
-•			@PostConstruct and afterPropertiesSet() methods are called.
-•		After Initialization: 
-•			where Proxies are created for AOP, @Transactional, or @Async features. 
-•	8. Context Ready
-•		Once all Singleton beans are instantiated and wired, the ContextRefreshedEvent is published. 
-•		application is now fully "up" and ready to handle requests. 
-•	Summary Checklist
-•		Scan for classes.
-•		Register BeanDefinitions.
-•		Process Property Placeholders.
-•		Instantiate & Inject (DI).
-•		Initialize (Call @PostConstruct).
-•		Proxy (Wrap beans for Transactions/AOP).
+	* the container follows a precise sequence to transform your classes into a running application. 
+	* 1. Preparation
+	* 	sets up the environment, 
+	* 	initializes property sources (like application.properties), 
+	* 	prepares the internal structures for the context. 
+	* 2. Bean Definition Loading (The Blueprint)
+	* 	scans your project or reads @Configuration classes. 
+	* 	doesn't create objects yet.
+	* 	creates BeanDefinitions—metadata "blueprints" that describe the bean's class, scope, and dependencies. 
+	* 3. BeanFactoryPostProcessing (The Customizer) 
+	* 	Before any beans are instantiated, allows BeanFactoryPostProcessor beans to run. 
+	* 	Example: PropertySourcesPlaceholderConfigurer runs to replace ${db.url} placeholders with values properties file. 
+	* 4. Bean Instantiation (The Birth)
+	* 	container starts creating the actual bean instances. 
+	* 	Constructor Injection, Spring resolves and injects dependencies immediately.
+	* 	Circular Dependency is found here without @Lazy, the application crashes. 
+	* 5. Dependency Injection (The Wiring)
+	* 	"populates" the beans by injecting dependencies into fields (@Autowired or setter methods)
+	* 6. Aware Interface Callbacks 
+	* 	beans implement "Aware" interfaces (like BeanNameAware), passes  framework objects (like the Bean Name or ApplicationContext) to the instance. 
+	* 7. Bean Post-Processing (The Magic)
+	* 	Before Initialization: 
+	* 		Logic runs before @PostConstruct.
+	* 	Initialization: 
+	* 		@PostConstruct and afterPropertiesSet() methods are called.
+	* 	After Initialization: 
+	* 		where Proxies are created for AOP, @Transactional, or @Async features. 
+	* 8. Context Ready
+	* 	Once all Singleton beans are instantiated and wired, the ContextRefreshedEvent is published. 
+	* 	application is now fully "up" and ready to handle requests. 
+	* Summary Checklist
+	* 	Scan for classes.
+	* 	Register BeanDefinitions.
+	* 	Process Property Placeholders.
+	* 	Instantiate & Inject (DI).
+	* 	Initialize (Call @PostConstruct).
+	* 	Proxy (Wrap beans for Transactions/AOP).
 
 What are AOP, CGLIB and JDK Dynamic Proxies ?
 --
-•	Spring AOP is the concept/framework for modularity (e.g., transactions, logging). 
-•	CGLIB is a mechanism (a bytecode library) to implement that concept.
-•	Proxying Mechanism:
-•		JDK Dynamic Proxies: 
-•			Requires interfaces; 
-•			creates a proxy that implements the same interface as the target.
-•		CGLIB: 
-•			Creates a subclass of the target class at runtime.
-•	Usage in Spring: 
-•		target bean implements an interface, uses JDK dynamic proxies by default. 
-•		no interface is implemented, it defaults to CGLIB.
-•	Limitations:
-•		CGLIB: 
-•			Cannot proxy final classes or final methods because they cannot be subclassed or overridden.
-•		JDK: 
-•			Limited to interface methods.
-•	Performance: 
-•		Historically, CGLIB was faster than JDK proxies, but this gap has significantly closed in modern Java versions.
+	* Spring AOP is the concept/framework for modularity (e.g., transactions, logging). 
+	* CGLIB is a mechanism (a bytecode library) to implement that concept.
+	* Proxying Mechanism:
+	* 	JDK Dynamic Proxies: 
+	* 		Requires interfaces; 
+	* 		creates a proxy that implements the same interface as the target.
+	* 	CGLIB: 
+	* 		Creates a subclass of the target class at runtime.
+	* Usage in Spring: 
+	* 	target bean implements an interface, uses JDK dynamic proxies by default. 
+	* 	no interface is implemented, it defaults to CGLIB.
+	* Limitations:
+	* 	CGLIB: 
+	* 		Cannot proxy final classes or final methods because they cannot be subclassed or overridden.
+	* 	JDK: 
+	* 		Limited to interface methods.
+	* Performance: 
+	* 	Historically, CGLIB was faster than JDK proxies, but this gap has significantly closed in modern Java versions.
 
 Purpose of @Bean annotation ?
 --
-•	@Bean annotation is used to explicitly declare a method that produces a bean to be managed by the Spring IoC (Inversion of Control) container.
-•	Purpose of @Bean
-•		* Manual Bean Creation: It tells Spring that the object returned by the annotated method should be registered as a bean in the application context.
-•		* Third-Party Integration: It is primarily used to register classes from external libraries (where you cannot add @Component to the source code).
-•		* Custom Initialization: It allows you to write custom logic to instantiate and configure an object before it is managed by Spring.
-•		* Decoupling: It separates the bean's declaration from its actual class definition. [3, 4, 5, 6, 7, 8] 
-•	
-•	Where can it be applied?
-•		The @Bean annotation is strictly a method-level annotation. [4, 8] 
-•	
-•	| Target  | Can @Bean be applied? | Alternative Annotation |
-•	| Classes | No | Use @Component, @Service, @Repository, or @Configuration at the class level instead. |
-•	| Methods | Yes | This is the standard use; usually inside a @Configuration class. |
-•	| Fields | No | Use @Autowired or @Value on fields to inject dependencies or properties into them. |
-•	
-•	Key Context: 
-•		While @Bean is most commonly used within classes annotated with @Configuration, 
-•		it can also be used inside a regular @Component class (known as "Lite Mode"), 
-•		though this is less common and has different runtime behavior regarding inter-bean dependencies. [4, 15]  
+	* @Bean annotation is used to explicitly declare a method that produces a bean to be managed by the Spring IoC (Inversion of Control) container.
+	* Purpose of @Bean
+	* 	* Manual Bean Creation: It tells Spring that the object returned by the annotated method should be registered as a bean in the application context.
+	* 	* Third-Party Integration: It is primarily used to register classes from external libraries (where you cannot add @Component to the source code).
+	* 	* Custom Initialization: It allows you to write custom logic to instantiate and configure an object before it is managed by Spring.
+	* 	* Decoupling: It separates the bean's declaration from its actual class definition. [3, 4, 5, 6, 7, 8] 
+	* 
+	* Where can it be applied?
+	* 	The @Bean annotation is strictly a method-level annotation. [4, 8] 
+	* 
+	* | Target  | Can @Bean be applied? | Alternative Annotation |
+	* | Classes | No | Use @Component, @Service, @Repository, or @Configuration at the class level instead. |
+	* | Methods | Yes | This is the standard use; usually inside a @Configuration class. |
+	* | Fields | No | Use @Autowired or @Value on fields to inject dependencies or properties into them. |
+	* 
+	* Key Context: 
+	* 	While @Bean is most commonly used within classes annotated with @Configuration, 
+	* 	it can also be used inside a regular @Component class (known as "Lite Mode"), 
+	* 	though this is less common and has different runtime behavior regarding inter-bean dependencies. [4, 15]  
 SPRING BOOT INTERNALS (EXTREMELY COMMON)
 What is Spring Boot?
 Expected answer:
-•	Opinionated Spring configuration
-•	Auto-configuration
-•	Embedded server
-•	Starter dependencies
+	* Opinionated Spring configuration
+	* Auto-configuration
+	* Embedded server
+	* Starter dependencies
 
 How does Spring Boot Auto-Configuration work?
 --
@@ -389,13 +389,13 @@ spring-boot-starter-web
 spring-boot-starter-data-jpa
 spring-boot-starter-security
 They bundle:
-•	dependencies
-•	auto-configuration
-•	default settings
+	* dependencies
+	* auto-configuration
+	* default settings
 ________________________________________
 Bean Management
 Common Questions
-•	What scopes exist for Spring beans?
+	* What scopes exist for Spring beans?
 Answer:
 singleton (default)
 prototype
@@ -525,93 +525,93 @@ What is @Transactional and when does it fail?
 Why can @Transactional(readOnly=true) improve performance?
 --
 It hints the persistence provider:
-•	skip dirty checking
-•	optimize queries
-•	avoid unnecessary locks
+	* skip dirty checking
+	* optimize queries
+	* avoid unnecessary locks
 But it does not enforce read-only at database level.
-•	@Transactional(readOnly = true) 
-o	a performance "hint" triggers several optimizations within both Hibernate and Database. 
-•	1. Disabling Dirty Checking (The Biggest Gain)
-o	By default, Hibernate keeps a "snapshot" of every entity loaded in the persistence context. 
-o	At the end of the transaction, compares the current state of the entity with that snapshot 
-o	see if any data changed—this is called Dirty Checking.
-o	With readOnly = true: skips creating snapshots and bypasses the dirty checking process entirely
-•	2. Flush Mode Optimization 
-o	standard transaction, performs a "flush" (synchronizing memory with DB) 
-o		before every query 
-o		at the end of the transaction. 
-o	readOnly = true: 
-	flush mode is set to MANUAL. 
-	no changes expected, never flushes the session. 
-o	Result: 
-	Fewer round-trips to the database and 
-	less internal processing. 
-•	3. Database-Level Locks
-o	Locks: 
-	DB can avoid acquiring certain Write Locks or internal latches, 
-	reduces contention and 
-	allows other transactions to run concurrently without waiting. 
-•	4. Routing to Read Replicas
-o	configure Spring to automatically route all @Transactional(readOnly = true) calls to a Read Replica 
-o	while keeping the "Write" node free for heavy transactions. [5] 
+	* @Transactional(readOnly = true) 
+		* a performance "hint" triggers several optimizations within both Hibernate and Database. 
+	* 1. Disabling Dirty Checking (The Biggest Gain)
+		* By default, Hibernate keeps a "snapshot" of every entity loaded in the persistence context. 
+		* At the end of the transaction, compares the current state of the entity with that snapshot 
+		* see if any data changed—this is called Dirty Checking.
+		* With readOnly = true: skips creating snapshots and bypasses the dirty checking process entirely
+	* 2. Flush Mode Optimization 
+		* standard transaction, performs a "flush" (synchronizing memory with DB) 
+		* 	before every query 
+		* 	at the end of the transaction. 
+		* readOnly = true: 
+		* flush mode is set to MANUAL. 
+		* no changes expected, never flushes the session. 
+		* Result: 
+		* Fewer round-trips to the database and 
+		* less internal processing. 
+	* 3. Database-Level Locks
+		* Locks: 
+		* DB can avoid acquiring certain Write Locks or internal latches, 
+		* reduces contention and 
+		* allows other transactions to run concurrently without waiting. 
+	* 4. Routing to Read Replicas
+		* configure Spring to automatically route all @Transactional(readOnly = true) calls to a Read Replica 
+		* while keeping the "Write" node free for heavy transactions. [5] 
 
-•	Why @Transactional, if no changes? 
-•	1. Consistência de Leitura (Repeatable Read)
-o	Sem uma transação, cada consulta SQL dentro do seu método pode ver um "estado" diferente do banco de dados se outros usuários estiverem salvando dados simultaneamente.
-o	@Transactional: garante todas as queries dentro daquele método vejam a mesma (snapshot) do banco de dados, 
-o	garantindo consistência nos relatórios ou lógicas de decisão.
-•	2. Prevenção da LazyInitializationException
-o	O Hibernate precisa Session aberta carregar associações LAZY.
-o	@Transactional mantém a sessão aberta até fim método. 
-o		remover a anotação e tentar acessar uma lista de filhos (parent.getChildren()) fora do repositório, 
-o		lançará a famosa exceção porque a "porta" para o banco de dados já fechou.
-•	3. Propagação e Reutilização
-o	métodos de serviço chamam outros métodos. 
-o		Estar em uma transação permite que o Spring gerencie a propagação.
-o	Se o Metodo_A é readOnly=false e chama o Metodo_B que é readOnly=true, 
-o		o Spring sabe como mesclar sem abrir e fechar múltiplas conexões com BD, economizando recursos.
-•	Resumo
-o	Mesmo sendo "apenas leitura", a anotação define o limite de onde começa e termina o seu trabalho com o banco de dados, garantindo que você tenha uma conexão disponível e estável durante todo o processo.
+	* Why @Transactional, if no changes? 
+	* 1. Consistência de Leitura (Repeatable Read)
+		* Sem uma transação, cada consulta SQL dentro do seu método pode ver um "estado" diferente do banco de dados se outros usuários estiverem salvando dados simultaneamente.
+		* @Transactional: garante todas as queries dentro daquele método vejam a mesma (snapshot) do banco de dados, 
+		* garantindo consistência nos relatórios ou lógicas de decisão.
+	* 2. Prevenção da LazyInitializationException
+		* O Hibernate precisa Session aberta carregar associações LAZY.
+		* @Transactional mantém a sessão aberta até fim método. 
+		* 	remover a anotação e tentar acessar uma lista de filhos (parent.getChildren()) fora do repositório, 
+		* 	lançará a famosa exceção porque a "porta" para o banco de dados já fechou.
+	* 3. Propagação e Reutilização
+		* métodos de serviço chamam outros métodos. 
+		* 	Estar em uma transação permite que o Spring gerencie a propagação.
+		* Se o Metodo_A é readOnly=false e chama o Metodo_B que é readOnly=true, 
+		* 	o Spring sabe como mesclar sem abrir e fechar múltiplas conexões com BD, economizando recursos.
+	* Resumo
+		* Mesmo sendo "apenas leitura", a anotação define o limite de onde começa e termina o seu trabalho com o banco de dados, garantindo que você tenha uma conexão disponível e estável durante todo o processo.
 
 Why does @Transactional sometimes not work?
 --
 Cause: Spring uses proxy-based AOP.
 @Transactional fails when:
-•	1 Same-Class Method Calls (Self-Invocation Problem)
-o	Spring creates proxies around beans to manage transactions. 
-o	When you call a transactional method from another method in the same class, the call bypasses the proxy → no transaction.
-o	Move the method into another Spring-managed bean and call it via that bean.
-o	Or inject self-proxy using AopContext.
-•	2️ Private Methods
-o	Spring AOP works only with public methods. 
-o	If you mark a transactional method as private, the proxy cannot intercept it.
-o	Keep transactional methods public.
-•	3️ Final or Static Methods
-o	Spring uses dynamic proxies (JDK or CGLIB).
-o	final methods cannot be overridden → no proxying.
-o	static methods belong to the class, not the proxy → no interception.
-o	Avoid using final or static with transactional methods.
-•	4️ Exceptions Caught Internally
-o	By default, @Transactional only rolls back on unchecked (runtime) exceptions. 
-o	If you catch exceptions inside the method, Spring never sees them → rollback won’t happen.
-o	Re-throw exceptions.
-o	Or explicitly declare rollback rules: @Transactional(rollbackFor = Exception.class)
-•	5️ Calls Inside Constructors
-o	Transactions are not active during bean initialization (constructors). 
-o	If you call a transactional method inside a constructor, it won’t work.
-o	Don’t use transactional methods in constructors. Use @PostConstruct or call after bean initialization.
-•	6️ Wrong Transaction Manager (Multiple Datasources)
-o	In multi-database applications, you may have multiple PlatformTransactionManagers. 
-o	If the wrong manager is picked, transactions won’t apply correctly.
-o	@Transactional("mysqlTransactionManager")
-o	public void saveMySqlData() { ... }
-o	Always specify the correct transaction manager when using multiple datasources.
-•	7️ Non-Spring Managed Beans
-o	If you create an object using new, it won’t be a Spring-managed bean → no proxy → no transaction.
-o	public void processOrder() {
-o	    PaymentService ps = new PaymentService(); // Not Spring bean
-o	    ps.savePayment(); // @Transactional won’t work
-o	}
+	* 1 Same-Class Method Calls (Self-Invocation Problem)
+		* Spring creates proxies around beans to manage transactions. 
+		* When you call a transactional method from another method in the same class, the call bypasses the proxy → no transaction.
+		* Move the method into another Spring-managed bean and call it via that bean.
+		* Or inject self-proxy using AopContext.
+	* 2️ Private Methods
+		* Spring AOP works only with public methods. 
+		* If you mark a transactional method as private, the proxy cannot intercept it.
+		* Keep transactional methods public.
+	* 3️ Final or Static Methods
+		* Spring uses dynamic proxies (JDK or CGLIB).
+		* final methods cannot be overridden → no proxying.
+		* static methods belong to the class, not the proxy → no interception.
+		* Avoid using final or static with transactional methods.
+	* 4️ Exceptions Caught Internally
+		* By default, @Transactional only rolls back on unchecked (runtime) exceptions. 
+		* If you catch exceptions inside the method, Spring never sees them → rollback won’t happen.
+		* Re-throw exceptions.
+		* Or explicitly declare rollback rules: @Transactional(rollbackFor = Exception.class)
+	* 5️ Calls Inside Constructors
+		* Transactions are not active during bean initialization (constructors). 
+		* If you call a transactional method inside a constructor, it won’t work.
+		* Don’t use transactional methods in constructors. Use @PostConstruct or call after bean initialization.
+	* 6️ Wrong Transaction Manager (Multiple Datasources)
+		* In multi-database applications, you may have multiple PlatformTransactionManagers. 
+		* If the wrong manager is picked, transactions won’t apply correctly.
+		* @Transactional("mysqlTransactionManager")
+		* public void saveMySqlData() { ... }
+		* Always specify the correct transaction manager when using multiple datasources.
+	* 7️ Non-Spring Managed Beans
+		* If you create an object using new, it won’t be a Spring-managed bean → no proxy → no transaction.
+		* public void processOrder() {
+		*     PaymentService ps = new PaymentService(); // Not Spring bean
+		*     ps.savePayment(); // @Transactional won’t work
+		* }
 
  
 Spring Boot Testing
@@ -1029,18 +1029,18 @@ Focus on controller logic
  
 Spring Security 
 Basic questions:
-•	What is Spring Security?
-•	How does authentication work?
-•	Difference between:
+	* What is Spring Security?
+	* How does authentication work?
+	* Difference between:
 authentication
 authorization
 ________________________________________
 1. How does Spring Security integrate with Spring Boot?
 Spring Boot provides auto-configuration for Spring Security when the dependency is present.
 Key elements:
-•	Filter chain intercepts HTTP requests.
-•	AuthenticationManager authenticates credentials.
-•	SecurityContext holds authentication information.
+	* Filter chain intercepts HTTP requests.
+	* AuthenticationManager authenticates credentials.
+	* SecurityContext holds authentication information.
 Typical configuration:
 @Bean
 SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -1079,9 +1079,9 @@ ________________________________________
  
 Performance & Scalability
 Typical questions:
-•	How do you optimize a Spring Boot app?
-•	How do you reduce startup time?
-•	How do you tune connection pools?
+	* How do you optimize a Spring Boot app?
+	* How do you reduce startup time?
+	* How do you tune connection pools?
 Expected mentions:
 HikariCP
 lazy initialization
@@ -1107,167 +1107,167 @@ If preparing for a senior backend interview, these appear very often:
 ________________________________________
 ________________________________________
 Why can parallelStream() be dangerous in backend services?
-•	it implicitly utilizes the shared JVM-wide ForkJoinPool.commonPool()
-•	This lack of isolation, combined with potential thread safety issues and performance overhead, can lead to system-wide instability. 
-•	1. Resource Contention (The "Common Pool" Danger)
-o	Shared Pool Exhaustion: 
-o		parallelStream() does not have its own dedicated thread pool. 
-o		uses the ForkJoinPool.commonPool(), which is shared across the entire JVM. 
-o		it can consume all available threads in the common pool.
-o	Performance Degradation: 
-o		common pool is exhausted, other critical parts application that also use will be forced to wait 
-•	2. Inappropriate for I/O-Bound Operations
-o	Blocking Threads: 
-o		designed for CPU-bound tasks, not I/O-bound tasks. 
-o		database calls, network requests, or file I/O, the threads will be waiting, rather than computing.
-o	Slow-Down: 
-o		number of threads in pool is limited, blocking those threads on I/O can starve CPU-intensive tasks 
-•	3. Thread Safety and Data Loss
-o	Shared Mutable State: 
-o		attempts to modify shared data (e.g., adding ArrayList or HashMap) a forEach, can cause race conditions. 
-o		results in lost data, incorrect counts, or ConcurrentModificationException.
-o	Unsafe Operations: 
-o		collect is generally safe, forEach to populate non-thread-safe collections is a common source of bugs. 
-•	4. Hidden Performance Overhead
-o	Splitting and Merging Costs: 
-o		JVM must split the data (Spliterator), manage threads, and merge results. 
-o		the overhead of managing these threads can make parallelStream() slower than a standard sequential stream().
-o	Inefficient Data Structures: 
-o		on structures that do not split evenly (like LinkedList) can result in poor performance. 
-•	5. Lack of Control and Debuggability 
-o	Debugging Difficulty: 
-o		Exception handling and debugging are significantly harder in parallel streams the stack trace is broken across different threads.
-o	No Easy Cancellation: 
-o		no built-in, easy way to stop a parallelStream() once it has started. 
-•	Summary Recommendation
-o	Never use parallelStream() for I/O-bound tasks.
-o	Only use it for large datasets with CPU-intensive operations (heavy calculations).
-o	Avoid shared mutable state within parallel operations.
-o	Prefer explicit ExecutorService (dedicated thread pool) for better isolation and control over your background tasks
-	ExecutorService
-	CompletableFuture
-	custom thread pools
+	* it implicitly utilizes the shared JVM-wide ForkJoinPool.commonPool()
+	* This lack of isolation, combined with potential thread safety issues and performance overhead, can lead to system-wide instability. 
+	* 1. Resource Contention (The "Common Pool" Danger)
+		* Shared Pool Exhaustion: 
+		* 	parallelStream() does not have its own dedicated thread pool. 
+		* 	uses the ForkJoinPool.commonPool(), which is shared across the entire JVM. 
+		* 	it can consume all available threads in the common pool.
+		* Performance Degradation: 
+		* 	common pool is exhausted, other critical parts application that also use will be forced to wait 
+	* 2. Inappropriate for I/O-Bound Operations
+		* Blocking Threads: 
+		* 	designed for CPU-bound tasks, not I/O-bound tasks. 
+		* 	database calls, network requests, or file I/O, the threads will be waiting, rather than computing.
+		* Slow-Down: 
+		* 	number of threads in pool is limited, blocking those threads on I/O can starve CPU-intensive tasks 
+	* 3. Thread Safety and Data Loss
+		* Shared Mutable State: 
+		* 	attempts to modify shared data (e.g., adding ArrayList or HashMap) a forEach, can cause race conditions. 
+		* 	results in lost data, incorrect counts, or ConcurrentModificationException.
+		* Unsafe Operations: 
+		* 	collect is generally safe, forEach to populate non-thread-safe collections is a common source of bugs. 
+	* 4. Hidden Performance Overhead
+		* Splitting and Merging Costs: 
+		* 	JVM must split the data (Spliterator), manage threads, and merge results. 
+		* 	the overhead of managing these threads can make parallelStream() slower than a standard sequential stream().
+		* Inefficient Data Structures: 
+		* 	on structures that do not split evenly (like LinkedList) can result in poor performance. 
+	* 5. Lack of Control and Debuggability 
+		* Debugging Difficulty: 
+		* 	Exception handling and debugging are significantly harder in parallel streams the stack trace is broken across different threads.
+		* No Easy Cancellation: 
+		* 	no built-in, easy way to stop a parallelStream() once it has started. 
+	* Summary Recommendation
+		* Never use parallelStream() for I/O-bound tasks.
+		* Only use it for large datasets with CPU-intensive operations (heavy calculations).
+		* Avoid shared mutable state within parallel operations.
+		* Prefer explicit ExecutorService (dedicated thread pool) for better isolation and control over your background tasks
+		* ExecutorService
+		* CompletableFuture
+		* custom thread pools
 ________________________________________
 Why is field injection (@Autowired) discouraged?
-•	Difficult Unit Testing: 
-o	dependencies are not passed through a constructor, cannot easily instantiate the class in a unit test with mocks; 
-o	you must use reflection or Spring testing utilities.
-•	Lack of Immutability: 
-o	Fields must be mutable (non-final) for the container to inject them, 
-o	meaning the object's dependencies can be changed after instantiation.
-•	Hidden Dependencies: 
-o	not obvious what dependencies a class requires just by looking at its constructor, making code less explicit.
-o	Easy to Overuse: 
-o	encourages adding too many dependencies, as there is no visual clutter (like a long constructor) 
-•	Tight Coupling: 
-o	Classes are tightly coupled to the Spring DI container and cannot easily be used in a different context.
-o	Risk of NullPointerException: 
-o	class is instantiated without the container (e.g., in a test), the dependencies will be null. 
-•	Recommended Alternative: 
-o	Constructor-based injection is preferred because it makes dependencies mandatory, 
-o	allows for final fields, and ensures the class is fully initialized upon creation.
-o	@Autowired
-o	UserService service;
+	* Difficult Unit Testing: 
+		* dependencies are not passed through a constructor, cannot easily instantiate the class in a unit test with mocks; 
+		* you must use reflection or Spring testing utilities.
+	* Lack of Immutability: 
+		* Fields must be mutable (non-final) for the container to inject them, 
+		* meaning the object's dependencies can be changed after instantiation.
+	* Hidden Dependencies: 
+		* not obvious what dependencies a class requires just by looking at its constructor, making code less explicit.
+		* Easy to Overuse: 
+		* encourages adding too many dependencies, as there is no visual clutter (like a long constructor) 
+	* Tight Coupling: 
+		* Classes are tightly coupled to the Spring DI container and cannot easily be used in a different context.
+		* Risk of NullPointerException: 
+		* class is instantiated without the container (e.g., in a test), the dependencies will be null. 
+	* Recommended Alternative: 
+		* Constructor-based injection is preferred because it makes dependencies mandatory, 
+		* allows for final fields, and ensures the class is fully initialized upon creation.
+		* @Autowired
+		* UserService service;
 ________________________________________
 Why can OpenSessionInView be dangerous?
-•	OSIV stands for Open Session In View, 
-o		a design pattern used in Hibernate to manage database transactions and sessions. 
-o		keeping the session open, help simplify the management of Hibernate sessions and transactions, 
-o		make it easier to work with lazy-loaded data.
-o		designed to prevent LazyInitializationException 
-o		keeping the Hibernate Session (Persistence Context) open during rendering, 
-•	considered dangerous because it leads to 
-o		severe performance bottlenecks, 
-o		architectural issues, and 
-o	potential data security risks. 
-•	1. Severe Performance Degradation (The N+1 Problem) 
-o	Lazy Loading in the View: 
-o		session remains open, any access to an uninitialized lazy collection trigger a new DBquery.
-o	The N+1 Query Problem: 
-o		list of 100 items, each item triggers a query to load a lazy collection, end up with 101 queries 
-o	Slow Page Load/Response: 
-o		db is hammered with many small queries, resulting in high latency. 
-•	2. Database Connection Pool Exhaustion
-o	Long-Running Connections: 
-o		db connection held open entire HTTP request lifecycle, including render the view or serialize JSON.
-o	Blocking Other Requests: 
-o		high-traffic scenario, this can quickly exhaust the connection pool, leaving no connections 
-•	3. Architectural Violations
-o	Separation of Concerns: 
-o		blurs the line between the Service Layer (business logic/transactions) and the Presentation Layer (UI/view).
-o	Unexpected Data Modification: 
-o		session is still open, accidental changes to entities can be automatically flushed (saved) to the database 
-•	4. Hidden Defects
-o	Hiding Errors: 
-o		LazyInitializationException occurs when trying to access data outside a transaction, 
-o		alerting you to a flaw in your data loading strategy.
-o	Production Failures: 
-o		OSIV masks this error, allowing code to function development 
-o		causing severe performance issues only in production. 
-•	5. Potential Data Security Issues
-o	Accidental Exposure: 
-o		Data binding or JSON serialization frameworks might traverse associations not intend to expose, 
-o		potentially serializing sensitive data that. 
-•	Best Practice
-o	recommended to disable it 
-o		(spring.jpa.open-in-view=false) 
-o	JPQL/HQL JOIN FETCH: 
-o		load required associations in the service layer.
-o		@Query("SELECT o FROM Order o JOIN FETCH o.items")
-o	Entity Graphs: 
-o		To selectively load data.
-o	DTO (Data Transfer Object) Projections: 
-o		map only needed data
-o	
+	* OSIV stands for Open Session In View, 
+		* 	a design pattern used in Hibernate to manage database transactions and sessions. 
+		* 	keeping the session open, help simplify the management of Hibernate sessions and transactions, 
+		* 	make it easier to work with lazy-loaded data.
+		* 	designed to prevent LazyInitializationException 
+		* 	keeping the Hibernate Session (Persistence Context) open during rendering, 
+	* considered dangerous because it leads to 
+		* 	severe performance bottlenecks, 
+		* 	architectural issues, and 
+		* potential data security risks. 
+	* 1. Severe Performance Degradation (The N+1 Problem) 
+		* Lazy Loading in the View: 
+		* 	session remains open, any access to an uninitialized lazy collection trigger a new DBquery.
+		* The N+1 Query Problem: 
+		* 	list of 100 items, each item triggers a query to load a lazy collection, end up with 101 queries 
+		* Slow Page Load/Response: 
+		* 	db is hammered with many small queries, resulting in high latency. 
+	* 2. Database Connection Pool Exhaustion
+		* Long-Running Connections: 
+		* 	db connection held open entire HTTP request lifecycle, including render the view or serialize JSON.
+		* Blocking Other Requests: 
+		* 	high-traffic scenario, this can quickly exhaust the connection pool, leaving no connections 
+	* 3. Architectural Violations
+		* Separation of Concerns: 
+		* 	blurs the line between the Service Layer (business logic/transactions) and the Presentation Layer (UI/view).
+		* Unexpected Data Modification: 
+		* 	session is still open, accidental changes to entities can be automatically flushed (saved) to the database 
+	* 4. Hidden Defects
+		* Hiding Errors: 
+		* 	LazyInitializationException occurs when trying to access data outside a transaction, 
+		* 	alerting you to a flaw in your data loading strategy.
+		* Production Failures: 
+		* 	OSIV masks this error, allowing code to function development 
+		* 	causing severe performance issues only in production. 
+	* 5. Potential Data Security Issues
+		* Accidental Exposure: 
+		* 	Data binding or JSON serialization frameworks might traverse associations not intend to expose, 
+		* 	potentially serializing sensitive data that. 
+	* Best Practice
+		* recommended to disable it 
+		* 	(spring.jpa.open-in-view=false) 
+		* JPQL/HQL JOIN FETCH: 
+		* 	load required associations in the service layer.
+		* 	@Query("SELECT o FROM Order o JOIN FETCH o.items")
+		* Entity Graphs: 
+		* 	To selectively load data.
+		* DTO (Data Transfer Object) Projections: 
+		* 	map only needed data
+		* 
 ________________________________________
 What is the N+1 query problem?
-•	The N+1 Query Problem is 
-o	a performance issue that occurs when a database query is executed repeatedly in a loop, 
-o	resulting in a large number of inefficient database queries. 
+	* The N+1 Query Problem is 
+		* a performance issue that occurs when a database query is executed repeatedly in a loop, 
+		* resulting in a large number of inefficient database queries. 
 List<Order> orders = repo.findAll();
 orders.get(0).getItems();
-o	Hibernate loads:
-	1 query for orders
-	N queries for items
-•	Solution:
-o	JOIN FETCH: 
-	Força um join explícito na query.
-o	@EntityGraph: 
-	Define um plano de carregamento dinâmico que usa joins.
-o	@BatchSize: 
-	Não reduz a 1 query, mas agrupa as queries em lotes (ex: transforma 101 queries em apenas 2 ou 3).
+		* Hibernate loads:
+		* 1 query for orders
+		* N queries for items
+	* Solution:
+		* JOIN FETCH: 
+		* Força um join explícito na query.
+		* @EntityGraph: 
+		* Define um plano de carregamento dinâmico que usa joins.
+		* @BatchSize: 
+		* Não reduz a 1 query, mas agrupa as queries em lotes (ex: transforma 101 queries em apenas 2 ou 3).
 
 
 
 ________________________________________
 Why should equals() and hashCode() both be overridden?
-•	collections rely on hashCode first, equals second.
+	* collections rely on hashCode first, equals second.
 Person p1 = new Person("John", 30);
 Person p2 = new Person("John", 30);
 System.out.println(p1.equals(p2)); // true
-•	But if hashCode() is not overridden:
+	* But if hashCode() is not overridden:
 Set<Person> set = new HashSet<>();
 set.add(p1);
 System.out.println(set.contains(p2)); // false ❌
-•	Contract:
-•		a.equals(b) → a.hashCode() == b.hashCode()
-•		O inverso não é obrigatório collision 
-•		(objetos diferentes podem ter o mesmo hash, o que chamamos de colisão)
+	* Contract:
+	* 	a.equals(b) → a.hashCode() == b.hashCode()
+	* 	O inverso não é obrigatório collision 
+	* 	(objetos diferentes podem ter o mesmo hash, o que chamamos de colisão)
 
 
 ________________________________________
 Why is Optional not recommended for fields or JPA entities?
-•	1. Problemas de Serialização
-o	A classe Optional não implementa Serializable. 
-o	Se sua entidade JPA precisar ser serializada (para sessões HTTP, cache distribuído como Redis, ou via RMI), o processo falhará com uma NotSerializableException.
-•	2. Especificação do JPA (Hibernate)
-o	O JPA foi projetado o modelo de JavaBeans, que espera getters e setters para campos diretos. 
-o	O Hibernate usa reflexão e proxies para manipular os dados. 
-o	o motor do JPA, não sabe mapear Optional para uma coluna do banco de dados (SQL não tem um tipo "Optional").
-o	exigiria a criação de um AttributeConverter personalizado para cada campo, adicionando complexidade desnecessária. 
-•	3. Custo de Memória (Overhead) 
-o	Optional é um objeto. 
-o	Isso aumenta a pressão no Garbage Collector e o consumo de memória RAM, sem trazer benefícios reais de armazenamento. 
+	* 1. Problemas de Serialização
+		* A classe Optional não implementa Serializable. 
+		* Se sua entidade JPA precisar ser serializada (para sessões HTTP, cache distribuído como Redis, ou via RMI), o processo falhará com uma NotSerializableException.
+	* 2. Especificação do JPA (Hibernate)
+		* O JPA foi projetado o modelo de JavaBeans, que espera getters e setters para campos diretos. 
+		* O Hibernate usa reflexão e proxies para manipular os dados. 
+		* o motor do JPA, não sabe mapear Optional para uma coluna do banco de dados (SQL não tem um tipo "Optional").
+		* exigiria a criação de um AttributeConverter personalizado para cada campo, adicionando complexidade desnecessária. 
+	* 3. Custo de Memória (Overhead) 
+		* Optional é um objeto. 
+		* Isso aumenta a pressão no Garbage Collector e o consumo de memória RAM, sem trazer benefícios reais de armazenamento. 
 @Entity
 public class Usuario {
     
@@ -1279,37 +1279,37 @@ public class Usuario {
 
 ________________________________________
 Why is List preferred over Set in JPA relationships?
-•	List is often the "safe" default in JPA because it avoids performance traps associated with Set.
-•	1. The equals() and hashCode() Nightmare
-o	Set relies heavily on hashCode() to ensure uniqueness.
-o	The Trap: 
-	database-generated @Id in your hashCode(), the hash changes after the entity is persisted 
-	entity in a HashSet, it becomes "lost" or unreachable.
-•		The List Advantage: 
-	doesn't care about hashCode() for basic operations, making more resilient lifecycle of JPA entities.
-•	2. Performance: The "Hidden" Select
-o	add an element to a Set, Hibernate must ensure it is unique.
-o	The Trap: 
-	guarantee uniqueness, Hibernate often has to initialize (load) the entire collection from the database just to check if the new item is already there
-o	The List Advantage: 
-	 can simply execute an INSERT without loading the existing elements.
-•	3. The "MultipleBagFetchException"
-o	List is easier, it has a famous limitation:
-	cannot JOIN FETCH two or more List collections in a single JPQL query 
-	triggers MultipleBagFetchException because it would create a massive Cartesian product).
-o	sometimes switch to Set just to bypass this error, 
-	usually a bad idea because it hides a performance issue 
-•	to avoid the MultipleBagFetchException while keeping the benefits of List, 
-o	best approach is to fetch the first collection and then use Batch Fetching Problems:
-•	Hibernate must call equals/hashCode
-•	performance overhead
-•	ordering issues
+	* List is often the "safe" default in JPA because it avoids performance traps associated with Set.
+	* 1. The equals() and hashCode() Nightmare
+		* Set relies heavily on hashCode() to ensure uniqueness.
+		* The Trap: 
+		* database-generated @Id in your hashCode(), the hash changes after the entity is persisted 
+		* entity in a HashSet, it becomes "lost" or unreachable.
+	* 	The List Advantage: 
+		* doesn't care about hashCode() for basic operations, making more resilient lifecycle of JPA entities.
+	* 2. Performance: The "Hidden" Select
+		* add an element to a Set, Hibernate must ensure it is unique.
+		* The Trap: 
+		* guarantee uniqueness, Hibernate often has to initialize (load) the entire collection from the database just to check if the new item is already there
+		* The List Advantage: 
+		*  can simply execute an INSERT without loading the existing elements.
+	* 3. The "MultipleBagFetchException"
+		* List is easier, it has a famous limitation:
+		* cannot JOIN FETCH two or more List collections in a single JPQL query 
+		* triggers MultipleBagFetchException because it would create a massive Cartesian product).
+		* sometimes switch to Set just to bypass this error, 
+		* usually a bad idea because it hides a performance issue 
+	* to avoid the MultipleBagFetchException while keeping the benefits of List, 
+		* best approach is to fetch the first collection and then use Batch Fetching Problems:
+	* Hibernate must call equals/hashCode
+	* performance overhead
+	* ordering issues
 ________________________________________
 ________________________________________
 🔟 Why is @ComponentScan sometimes problematic?
 Large scans can:
-•	slow application startup
-•	accidentally include unwanted beans
+	* slow application startup
+	* accidentally include unwanted beans
 Better:
 @ComponentScan(basePackages="com.myapp")
 ________________________________________
@@ -1318,14 +1318,14 @@ Default scope is:
 singleton
 Multiple threads share the same instance.
 Stateful beans can cause:
-•	race conditions
-•	inconsistent data
+	* race conditions
+	* inconsistent data
 ________________________________________
 1️⃣2️⃣ Why can @Async silently fail?
 Because it also uses Spring proxies.
 Fails if:
-•	method called internally
-•	method not public
+	* method called internally
+	* method not public
 Example:
 this.sendEmail(); // async ignored
 ________________________________________
@@ -1333,9 +1333,9 @@ ________________________________________
 Example:
 UserService service = new UserService();
 Problem:
-•	Spring cannot manage lifecycle
-•	no dependency injection
-•	no AOP features (transactions, security)
+	* Spring cannot manage lifecycle
+	* no dependency injection
+	* no AOP features (transactions, security)
 Always let Spring create beans.
 ________________________________________
 ________________________________________
@@ -1390,11 +1390,11 @@ Spring Boot Mastery – Interview Cheat Sheet (Part 3)
 ________________________________________
 2. What is the difference between Authentication and Authorization?
 Authentication
-•	Verifies who the user is
-•	Example: username/password validation
+	* Verifies who the user is
+	* Example: username/password validation
 Authorization
-•	Determines what the user is allowed to do
-•	Example: role-based access
+	* Determines what the user is allowed to do
+	* Example: role-based access
 Example:
 @PreAuthorize("hasRole('ADMIN')")
 public void deleteUser(Long id) {}
@@ -1408,9 +1408,9 @@ Typical flow:
 Example header:
 Authorization: Bearer <token>
 Common components:
-•	JwtTokenProvider
-•	OncePerRequestFilter
-•	SecurityFilterChain
+	* JwtTokenProvider
+	* OncePerRequestFilter
+	* SecurityFilterChain
 ________________________________________
 ________________________________________
 7. What are Spring Boot Actuator endpoints?
@@ -1423,29 +1423,29 @@ Examples:
 Configuration:
 management.endpoints.web.exposure.include=*
 Common production endpoints:
-•	health
-•	metrics
-•	prometheus
-•	loggers
+	* health
+	* metrics
+	* prometheus
+	* loggers
 ________________________________________
 8. What is Micrometer?
 Micrometer is a metrics instrumentation library used by Spring Boot.
 It provides abstraction for monitoring systems:
-•	Prometheus
-•	Datadog
-•	New Relic
-•	CloudWatch
+	* Prometheus
+	* Datadog
+	* New Relic
+	* CloudWatch
 Example metric:
 Counter counter = meterRegistry.counter("orders.created");
 counter.increment();
 ________________________________________
 9. How do you implement centralized logging in Spring Boot?
 Typical stack:
-•	Logback
-•	ELK stack
-o	Elasticsearch
-o	Logstash
-o	Kibana
+	* Logback
+	* ELK stack
+		* Elasticsearch
+		* Logstash
+		* Kibana
 Common approaches:
 1.	Structured logging (JSON)
 2.	Correlation IDs
@@ -1456,12 +1456,12 @@ ________________________________________
 10. What is distributed tracing?
 Distributed tracing tracks requests across microservices.
 Typical tools:
-•	Zipkin
-•	Jaeger
-•	OpenTelemetry
+	* Zipkin
+	* Jaeger
+	* OpenTelemetry
 Spring Boot uses:
-•	Micrometer Tracing
-•	OpenTelemetry
+	* Micrometer Tracing
+	* OpenTelemetry
 Trace example:
 API Gateway -> Order Service -> Payment Service
 All requests share the same traceId.
@@ -1469,10 +1469,10 @@ ________________________________________
 11. What is the difference between liveness and readiness probes?
 Used in Kubernetes deployments.
 Liveness probe
-•	Checks if the application is alive
-•	Restart container if failing
+	* Checks if the application is alive
+	* Restart container if failing
 Readiness probe
-•	Checks if the application can receive traffic
+	* Checks if the application can receive traffic
 Spring Boot exposes:
 /actuator/health/liveness
 /actuator/health/readiness
@@ -1587,239 +1587,239 @@ Use:
 → Allowed with setter injection; constructor injection fails. 
 Java Web Servers
 What is a Java Web Server?
-•	🛠️ Key Components and Features
-•		Servlet Container: 
-•			Manages the lifecycle of servlets, 
-•			mapping URLs to specific servlet classes, and 
-•			handling requests and responses efficiently.
-•		JSP Engine: 
-•			Processes JSP files, converting them into servlets for dynamic content generation.
-•		Security Modules: 
-•			authentication and authorization protocols to protect web applications from unauthorized access.
-•		Logging and Monitoring Tools: 
-•			Provides insights into server performance, aiding in troubleshooting and optimization.
-•	Popular Java Web Servers
-•		Apache Tomcat: 
-•			open-source implementation of the Java Servlet and JSP specifications, 
-•			widely used for its robustness and scalability.
-•		Jetty: 
-•			lightweight footprint and embeddable nature, 
-•			making it ideal for machine-to-machine communications and microservices architectures .
-•		Resin: 
-•			high performance and 
-•			advanced features like load balancing and clustering, 
-•			suitable for enterprise-level applications .
-•	choice depends on how much "heavy lifting" you want the server to do out of the box.
-•		1. Web Container (The Lightweight Choice)
-•			In Java, a "Web Server" is usually a Servlet Container. 
-•			implements only the web-related parts of the Jakarta EE (Java EE) spec, 
-•				like Servlets, 
-•				JSP, and 
-•				WebSocket.
-•			Examples: Apache Tomcat, Jetty.
-•			Best for: 
-•				Spring Boot apps, 
-•				Microservices, and 
-•				REST APIs.
-•			Pros: 
-•				Fast startup, 
-•				low memory footprint, and 
-•				easy to containerize (Docker).
-•		2. Application Server (The Full-Stack Choice)
-•			"Full Profile" server. 
-•			includes the Web Container plus 
-•			entire Jakarta EE suite: 
-•				EJB (Enterprise JavaBeans), 
-•				JMS (Messaging), 
-•				JTA (Distributed Transactions), and 
-•				JPA.
-•		Examples: 
-•			WildFly (JBoss), 
-•			GlassFish, 
-•			Open Liberty.
-•		Best for: 
-•			Massive enterprise systems that 
-•			need built-in transaction management and legacy integration.
-•		Pros: 
-•			"Batteries included"—
-•			don't need to add many external libraries because the server provides the APIs.
+	* 🛠️ Key Components and Features
+	* 	Servlet Container: 
+	* 		Manages the lifecycle of servlets, 
+	* 		mapping URLs to specific servlet classes, and 
+	* 		handling requests and responses efficiently.
+	* 	JSP Engine: 
+	* 		Processes JSP files, converting them into servlets for dynamic content generation.
+	* 	Security Modules: 
+	* 		authentication and authorization protocols to protect web applications from unauthorized access.
+	* 	Logging and Monitoring Tools: 
+	* 		Provides insights into server performance, aiding in troubleshooting and optimization.
+	* Popular Java Web Servers
+	* 	Apache Tomcat: 
+	* 		open-source implementation of the Java Servlet and JSP specifications, 
+	* 		widely used for its robustness and scalability.
+	* 	Jetty: 
+	* 		lightweight footprint and embeddable nature, 
+	* 		making it ideal for machine-to-machine communications and microservices architectures .
+	* 	Resin: 
+	* 		high performance and 
+	* 		advanced features like load balancing and clustering, 
+	* 		suitable for enterprise-level applications .
+	* choice depends on how much "heavy lifting" you want the server to do out of the box.
+	* 	1. Web Container (The Lightweight Choice)
+	* 		In Java, a "Web Server" is usually a Servlet Container. 
+	* 		implements only the web-related parts of the Jakarta EE (Java EE) spec, 
+	* 			like Servlets, 
+	* 			JSP, and 
+	* 			WebSocket.
+	* 		Examples: Apache Tomcat, Jetty.
+	* 		Best for: 
+	* 			Spring Boot apps, 
+	* 			Microservices, and 
+	* 			REST APIs.
+	* 		Pros: 
+	* 			Fast startup, 
+	* 			low memory footprint, and 
+	* 			easy to containerize (Docker).
+	* 	2. Application Server (The Full-Stack Choice)
+	* 		"Full Profile" server. 
+	* 		includes the Web Container plus 
+	* 		entire Jakarta EE suite: 
+	* 			EJB (Enterprise JavaBeans), 
+	* 			JMS (Messaging), 
+	* 			JTA (Distributed Transactions), and 
+	* 			JPA.
+	* 	Examples: 
+	* 		WildFly (JBoss), 
+	* 		GlassFish, 
+	* 		Open Liberty.
+	* 	Best for: 
+	* 		Massive enterprise systems that 
+	* 		need built-in transaction management and legacy integration.
+	* 	Pros: 
+	* 		"Batteries included"—
+	* 		don't need to add many external libraries because the server provides the APIs.
 
 Servlets vs JSP vs JSF
-•	represent different levels of abstraction. 
-•		as the Engine (Servlet), 
-•		the Template (JSP), and 
-•		the Framework (JSF).
-•	1. Servlet (The Low-Level Logic)
-•		Servlets are Java classes that handle HTTP requests and responses.
-•		How it works: You write Java code to generate HTML using out.println().
-•		Pros: 
-•			Very fast and powerful; 
-•			gives you total control.
-•		Cons: 
-•			Hard to maintain. 
-•			Writing HTML inside Java strings is a "coding nightmare."
-•		Best for: 
-•			Processing data, 
-•			acting as a Controller, or 
-•			building lightweight APIs.
-•	2. JSP - JavaServer Pages (The Scripting Page)
-•		JSP is essentially a Servlet in reverse. 
-•		It looks like HTML but allows you to drop Java code inside it.
-•		How it works: 
-•			You write HTML and use tags like <% %> (scriptlets) or JSTL to add logic.
-•		Pros: 
-•			Better for front-end developers because it looks like a webpage.
-•		Cons: 
-•			Mixing business logic with UI (HTML) leads to "spaghetti code."
-•		Status: 
-•			Mostly deprecated in modern development 
-•			replaced by Thymeleaf or client-side frameworks like React
-•	3. JSF - Jakarta Server Faces (The Component Framework)
-•		JSF is a heavy, component-based MVC framework 
-•		built on top of Servlets and JSP.
-•		How it works: 
-•			use pre-built UI components (like <h:dataTable>) that sync automatically with Java objects (Managed Beans).
-•		Pros: 
-•			Great for complex enterprise "Internal Tools" and forms; 
-•			handles state management and validation for you.
-•		Cons: 
-•			High learning curve; 
-•			generates heavy HTML/JavaScript; 
-•			hard to customize the look and feel.
-•	The Modern Reality
-•		In 2024/2025, most Java developers don't use JSP or JSF for new projects. 
-•		Backend: 
-•			Use Servlets (wrapped inside Spring Boot or Jakarta EE REST APIs).
-•		Frontend: 
-•			Use React/Angular/Vue (communicating via JSON) or 
-•			Thymeleaf (if server-side rendering is needed).
+	* represent different levels of abstraction. 
+	* 	as the Engine (Servlet), 
+	* 	the Template (JSP), and 
+	* 	the Framework (JSF).
+	* 1. Servlet (The Low-Level Logic)
+	* 	Servlets are Java classes that handle HTTP requests and responses.
+	* 	How it works: You write Java code to generate HTML using out.println().
+	* 	Pros: 
+	* 		Very fast and powerful; 
+	* 		gives you total control.
+	* 	Cons: 
+	* 		Hard to maintain. 
+	* 		Writing HTML inside Java strings is a "coding nightmare."
+	* 	Best for: 
+	* 		Processing data, 
+	* 		acting as a Controller, or 
+	* 		building lightweight APIs.
+	* 2. JSP - JavaServer Pages (The Scripting Page)
+	* 	JSP is essentially a Servlet in reverse. 
+	* 	It looks like HTML but allows you to drop Java code inside it.
+	* 	How it works: 
+	* 		You write HTML and use tags like <% %> (scriptlets) or JSTL to add logic.
+	* 	Pros: 
+	* 		Better for front-end developers because it looks like a webpage.
+	* 	Cons: 
+	* 		Mixing business logic with UI (HTML) leads to "spaghetti code."
+	* 	Status: 
+	* 		Mostly deprecated in modern development 
+	* 		replaced by Thymeleaf or client-side frameworks like React
+	* 3. JSF - Jakarta Server Faces (The Component Framework)
+	* 	JSF is a heavy, component-based MVC framework 
+	* 	built on top of Servlets and JSP.
+	* 	How it works: 
+	* 		use pre-built UI components (like <h:dataTable>) that sync automatically with Java objects (Managed Beans).
+	* 	Pros: 
+	* 		Great for complex enterprise "Internal Tools" and forms; 
+	* 		handles state management and validation for you.
+	* 	Cons: 
+	* 		High learning curve; 
+	* 		generates heavy HTML/JavaScript; 
+	* 		hard to customize the look and feel.
+	* The Modern Reality
+	* 	In 2024/2025, most Java developers don't use JSP or JSF for new projects. 
+	* 	Backend: 
+	* 		Use Servlets (wrapped inside Spring Boot or Jakarta EE REST APIs).
+	* 	Frontend: 
+	* 		Use React/Angular/Vue (communicating via JSON) or 
+	* 		Thymeleaf (if server-side rendering is needed).
 
  
 Jakarta EE (formerly Java EE) vs Spring Boot
-•	Jakarta EE 
-•		set of official standards (specifications), 
-•	Spring Boot 
-•		framework designed for rapid implementation.
-•	The Core Difference
-•		Jakarta EE (The Specification): 
-•			a rulebook. 
-•			defines how an API should behave (e.g., JAX-RS for REST). 
-•			Different vendors (Red Hat, IBM, Oracle) provide the actual "engine" (Application Server) to run your code. 
-•			prioritizes stability and portability—
-•			can theoretically move your code from one server to another without changing it.
-•		Spring Boot (The Implementation): 
-•			power tool. 
-•			"opinionated," meaning it makes decisions for you to get you running faster. 
-•			embeds the server (Tomcat) directly into your app. 
-•			prioritizes developer experience and 
-•			speed—you write less boilerplate code and get more features out of the box.
-•	Key Technical Comparison
-•		Jakarta EE	
-•		Spring Boot
-•	Philosophy	
-•		"Standards first" (Industry-driven)	
-•		"Developer first" (Opinionated)
-•	Packaging	
-•		Usually a .WAR file (needs a server)	
-•		Usually an executable .JAR (self-contained)
-•	REST Standard	
-•		Uses JAX-RS (e.g., @Path, @GET)	
-•		Uses Spring MVC (e.g., @RestController, @GetMapping)
-•	Dependency Injection	
-•		CDI (Contexts and Dependency Injection)	
-•		Spring DI (the original "Inversion of Control")
-•	Innovation Speed	
-•		Slower (requires committee consensus)	
-•		Faster (driven by the Spring/VMware team)
-•	Which should you choose?
-•		Spring Boot 
-•			building microservices, 
-•			integrate with modern Cloud/K8s tools quickly, or 
-•			want the largest ecosystem of third-party plugins (Security, Data, Cloud). 
-•			current industry standard for new projects.
-•		Choose Jakarta EE 
-•			work in a highly regulated environment (Banking, Gov) that 
-•			demands strict adherence to open standards, or 
-•			deploying to an existing enterprise application server infrastructure.
+	* Jakarta EE 
+	* 	set of official standards (specifications), 
+	* Spring Boot 
+	* 	framework designed for rapid implementation.
+	* The Core Difference
+	* 	Jakarta EE (The Specification): 
+	* 		a rulebook. 
+	* 		defines how an API should behave (e.g., JAX-RS for REST). 
+	* 		Different vendors (Red Hat, IBM, Oracle) provide the actual "engine" (Application Server) to run your code. 
+	* 		prioritizes stability and portability—
+	* 		can theoretically move your code from one server to another without changing it.
+	* 	Spring Boot (The Implementation): 
+	* 		power tool. 
+	* 		"opinionated," meaning it makes decisions for you to get you running faster. 
+	* 		embeds the server (Tomcat) directly into your app. 
+	* 		prioritizes developer experience and 
+	* 		speed—you write less boilerplate code and get more features out of the box.
+	* Key Technical Comparison
+	* 	Jakarta EE	
+	* 	Spring Boot
+	* Philosophy	
+	* 	"Standards first" (Industry-driven)	
+	* 	"Developer first" (Opinionated)
+	* Packaging	
+	* 	Usually a .WAR file (needs a server)	
+	* 	Usually an executable .JAR (self-contained)
+	* REST Standard	
+	* 	Uses JAX-RS (e.g., @Path, @GET)	
+	* 	Uses Spring MVC (e.g., @RestController, @GetMapping)
+	* Dependency Injection	
+	* 	CDI (Contexts and Dependency Injection)	
+	* 	Spring DI (the original "Inversion of Control")
+	* Innovation Speed	
+	* 	Slower (requires committee consensus)	
+	* 	Faster (driven by the Spring/VMware team)
+	* Which should you choose?
+	* 	Spring Boot 
+	* 		building microservices, 
+	* 		integrate with modern Cloud/K8s tools quickly, or 
+	* 		want the largest ecosystem of third-party plugins (Security, Data, Cloud). 
+	* 		current industry standard for new projects.
+	* 	Choose Jakarta EE 
+	* 		work in a highly regulated environment (Banking, Gov) that 
+	* 		demands strict adherence to open standards, or 
+	* 		deploying to an existing enterprise application server infrastructure.
  
 Web Server vs Application Server
 
-•	What is a Web Server?
-•		Definition :
-•			software or hardware system that serves static content using the HTTP or HTTPS protocol. 
-•			user enters a URL , responsible finding HTML page, image, CSS, or JavaScript file — and delivering it to the browser.
-•		Characteristics:
-•			Serves static content like HTML, images, CSS, JS.
-•			Handles HTTP requests and responses.
-•			not process backend logic or business rules.
-•			Can forward dynamic requests to an application server or backend service.
-•		Functions 
-•			Handling HTTP Requests: 
-•				process incoming HTTP requests and return the requested static resources 
-•			Serving Static Content: 
-•				store and deliver static files, such as web pages, images, and multimedia.
-•			Load Balancing: 
-•				can distribute traffic across multiple servers to enhance performance and reliability.
-•			Security Features: 
-•				features like SSL/TLS encryption, authentication, and access control.
-•			Logging and Monitoring: 
-•				keep logs of traffic and access patterns to analyze and optimize performance.
-•		Examples
-•			Apache HTTP Server – 
-•				widely used open-source web servers known for its flexibility and extensive module support.
-•			Nginx 
-•				high-performance web server known for its efficiency in handling concurrent connections and load balancing.
-•			Microsoft IIS (Internet Information Services) – 
-•				by Microsoft, used for hosting applications on Windows-based systems. 
-•				if you prefer Windows this is your go to.
-•			LiteSpeed 
-•				commercial web server known for its speed and scalability.
-•			Resin – 
-•				Java-based web server often used for Java applications.
-•	
-•	What is an Application Server?
-•		Definition :
-•			more advanced server that runs application code and delivers dynamic content. 
-•			designed to process logic, access databases, manage sessions, and execute programs written in languages like Java, Python, PHP, or .NET.
-•			software framework that provides a runtime environment for executing application logic. 
-•			Unlike a web server, which primarily delivers static content, 
-•			application server generates dynamic content by processing business logic and interacting with databases, APIs, and other backend services.	
-•		Characteristics:
-•			Executes backend business logic.
-•			Generates dynamic responses based on user input, database queries, or application workflows.
-•			Supports multiple communication protocols (HTTP, RMI, JMS, etc.).
-•			Often works in combination with a web server.
-•		Functions of an Application Server
-•			Executing Business Logic: 
-•				run complex backend processes that generate dynamic responses based on user input.
-•			Middleware Services: 
-•				allow communication between front-end applications and backend databases.
-•			Security Management: 
-•				provide authentication, authorization, and encryption features.
-•			Resource Management: 
-•				manage system resources such as memory, threads, and transactions to optimize performance.
-•		Examples
-•			Apache Tomcat 
-•				open-source Java application server used for running Java Servlets and JSP.
-•			JBoss (WildFly) 
-•				Java EE-based application server developed by Red Hat.
-•			IBM WebSphere 
-•				enterprise-grade application server with extensive integration capabilities.
-•			Oracle WebLogic Server – 
-•				Java EE application server used for deploying large-scale enterprise applications
+	* What is a Web Server?
+	* 	Definition :
+	* 		software or hardware system that serves static content using the HTTP or HTTPS protocol. 
+	* 		user enters a URL , responsible finding HTML page, image, CSS, or JavaScript file — and delivering it to the browser.
+	* 	Characteristics:
+	* 		Serves static content like HTML, images, CSS, JS.
+	* 		Handles HTTP requests and responses.
+	* 		not process backend logic or business rules.
+	* 		Can forward dynamic requests to an application server or backend service.
+	* 	Functions 
+	* 		Handling HTTP Requests: 
+	* 			process incoming HTTP requests and return the requested static resources 
+	* 		Serving Static Content: 
+	* 			store and deliver static files, such as web pages, images, and multimedia.
+	* 		Load Balancing: 
+	* 			can distribute traffic across multiple servers to enhance performance and reliability.
+	* 		Security Features: 
+	* 			features like SSL/TLS encryption, authentication, and access control.
+	* 		Logging and Monitoring: 
+	* 			keep logs of traffic and access patterns to analyze and optimize performance.
+	* 	Examples
+	* 		Apache HTTP Server – 
+	* 			widely used open-source web servers known for its flexibility and extensive module support.
+	* 		Nginx 
+	* 			high-performance web server known for its efficiency in handling concurrent connections and load balancing.
+	* 		Microsoft IIS (Internet Information Services) – 
+	* 			by Microsoft, used for hosting applications on Windows-based systems. 
+	* 			if you prefer Windows this is your go to.
+	* 		LiteSpeed 
+	* 			commercial web server known for its speed and scalability.
+	* 		Resin – 
+	* 			Java-based web server often used for Java applications.
+	* 
+	* What is an Application Server?
+	* 	Definition :
+	* 		more advanced server that runs application code and delivers dynamic content. 
+	* 		designed to process logic, access databases, manage sessions, and execute programs written in languages like Java, Python, PHP, or .NET.
+	* 		software framework that provides a runtime environment for executing application logic. 
+	* 		Unlike a web server, which primarily delivers static content, 
+	* 		application server generates dynamic content by processing business logic and interacting with databases, APIs, and other backend services.	
+	* 	Characteristics:
+	* 		Executes backend business logic.
+	* 		Generates dynamic responses based on user input, database queries, or application workflows.
+	* 		Supports multiple communication protocols (HTTP, RMI, JMS, etc.).
+	* 		Often works in combination with a web server.
+	* 	Functions of an Application Server
+	* 		Executing Business Logic: 
+	* 			run complex backend processes that generate dynamic responses based on user input.
+	* 		Middleware Services: 
+	* 			allow communication between front-end applications and backend databases.
+	* 		Security Management: 
+	* 			provide authentication, authorization, and encryption features.
+	* 		Resource Management: 
+	* 			manage system resources such as memory, threads, and transactions to optimize performance.
+	* 	Examples
+	* 		Apache Tomcat 
+	* 			open-source Java application server used for running Java Servlets and JSP.
+	* 		JBoss (WildFly) 
+	* 			Java EE-based application server developed by Red Hat.
+	* 		IBM WebSphere 
+	* 			enterprise-grade application server with extensive integration capabilities.
+	* 		Oracle WebLogic Server – 
+	* 			Java EE application server used for deploying large-scale enterprise applications
  
 JPA
-•	JPQL é a linguagem padrão da especificação JPA, focada em entidades e portátil entre provedores (Hibernate, EclipseLink). 
-•	HQL é a linguagem proprietária do Hibernate, um superset da JPQL, recursos extras (ex: polimorfismo, JOINs mais ricos). 
-•	JPQL é melhor para portabilidade, HQL para recursos avançados
+	* JPQL é a linguagem padrão da especificação JPA, focada em entidades e portátil entre provedores (Hibernate, EclipseLink). 
+	* HQL é a linguagem proprietária do Hibernate, um superset da JPQL, recursos extras (ex: polimorfismo, JOINs mais ricos). 
+	* JPQL é melhor para portabilidade, HQL para recursos avançados
 JOIN FETCH
-•	The FETCH keyword of the JOIN FETCH statement is JPA-specific. It tells the persistence provider to not only join the 2 database tables within the query but to also initialize the association on the returned entity. You can use it with a JOIN and a LEFT JOIN statement.
+	* The FETCH keyword of the JOIN FETCH statement is JPA-specific. It tells the persistence provider to not only join the 2 database tables within the query but to also initialize the association on the returned entity. You can use it with a JOIN and a LEFT JOIN statement.
 1.	Lazy Fetching (FetchType.LAZY) – Loads related data only when accessed.
 2.	Eager Fetching (FetchType.EAGER) – Loads related data immediately.
 3.	JOIN FETCH — Optimizes lazy fetching by reducing the number of queries.
-•	FetchType.EAGER: The persistence provider must load the related annotated field or property. This is the default behavior for @Basic, @ManyToOne, and @OneToOne annotated fields.
-•	FetchType.LAZY: The persistence provider should load data when it’s first accessed, but can be loaded eagerly. This is the default behavior for @OneToMany, @ManyToMany and @ElementCollection-annotated fields.
-•	@NamedEntityGraph( name = "post-entity-graph", attributeNodes = { @NamedAttributeNode("subject"), @NamedAttributeNode("user"), @NamedAttributeNode("comments"), } )
+	* FetchType.EAGER: The persistence provider must load the related annotated field or property. This is the default behavior for @Basic, @ManyToOne, and @OneToOne annotated fields.
+	* FetchType.LAZY: The persistence provider should load data when it’s first accessed, but can be loaded eagerly. This is the default behavior for @OneToMany, @ManyToMany and @ElementCollection-annotated fields.
+	* @NamedEntityGraph( name = "post-entity-graph", attributeNodes = { @NamedAttributeNode("subject"), @NamedAttributeNode("user"), @NamedAttributeNode("comments"), } )
  
 
  
